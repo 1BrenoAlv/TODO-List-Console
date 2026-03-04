@@ -1,7 +1,8 @@
-﻿namespace TaskSuppy.Entities.Enum
+﻿
+namespace TaskSuppy.Entities.Enum
 {
-    enum Status
+   public enum Status
     {
-        Concluido, Pendente, Atrasado,
+        CONCLUIDO = 1, PENDENTE = 2, ATRASADO = 3,
     }
 }

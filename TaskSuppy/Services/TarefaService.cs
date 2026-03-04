@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskSuppy.Entities;
+﻿using TaskSuppy.Entities;
 using TaskSuppy.Services.Interface;
 
 namespace TaskSuppy.Services
@@ -17,29 +12,48 @@ namespace TaskSuppy.Services
             _tarefa = tarefa;
         }
 
-        public List<Tarefa> ListarTarefas()
+        public TarefaService()
         {
-            return _tarefa;
         }
-        public void CriarTarefa(Tarefa tarefas)
+
+        public List<Tarefa> ListarTarefas()
         {
             try
             {
-                _tarefa.Add(tarefas);
+            return _tarefa;
+
             }
-            catch (Exception e) { throw new Exception("Erro: " + e.Message); }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao listar tarefas :" + e.Message);
+            }
+        }
+        public void CriarTarefa(Tarefa tarefa)
+        {
+            try
+            {
+                _tarefa.Add(tarefa);
+            }
+            catch (Exception e) { throw new Exception("Erro ao criar tarefa: " + e.Message); }
         }
 
-        public void EditarTarefa(Tarefa tarefas)
+        public void EditarTarefa(Tarefa tarefa)
         {
-            string titulo = tarefas.Titulo;
-            var tarefaEdit = _tarefa.FirstOrDefault(e => e.Titulo == titulo);
-            if (tarefaEdit != null)
+            try
             {
-                //TODO: Implementar crud 
+                int id = tarefa.Id;
+                var tarefaEdit = _tarefa.FirstOrDefault(e => e.Id == id);
+                if (tarefaEdit != null)
+                {
+                    tarefaEdit.Titulo = tarefa.Titulo;
+                    tarefaEdit.Descricao = tarefa.Descricao;
+                    tarefaEdit.HoraEstimada = tarefa.HoraEstimada;
+                }
             }
-
-
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao editar tarefa: " + e.Message);
+            }
         }
 
         public void DeletarTarefa(int id)
@@ -47,14 +61,49 @@ namespace TaskSuppy.Services
             try
             {
                 var tarefaExcluir = _tarefa.FirstOrDefault(i => i.Id == id);
-                if(tarefaExcluir != null) _tarefa.Remove(tarefaExcluir);
+                if (tarefaExcluir != null) _tarefa.Remove(tarefaExcluir);
             }
             catch (Exception e)
             {
-                throw new Exception("Erro: " + e.Message);
+                throw new Exception("Erro ao tentar deletar tarefa: " + e.Message);
             }
         }
 
+        public void AlterarStatus(Tarefa tarefa) 
+        {
+            try
+            {
+                int id = tarefa.Id;
+                var tarefaStatus = _tarefa.FirstOrDefault(i => i.Id == id);
+                if (tarefaStatus != null)
+                {
+                    tarefaStatus.StatusTarefa = tarefa.StatusTarefa;
+                }
+            }
+            catch (Exception e)
+            {
+                throw (new Exception("Erro ao Alterar Status da tarefa: " + e.Message));
+            }
+        }
 
+        public void PegarTarefa(int id)
+        {
+            try
+            {
+                var pegarTarefa = _tarefa.FirstOrDefault(p => p.Id == id);
+                if(pegarTarefa != null)
+                {
+                    Console.WriteLine($"===============Tarefa #{pegarTarefa.Id}================\n\n" +
+                  $"Titulo: {pegarTarefa.Titulo}\n" +
+                  $"Conteúdo: {pegarTarefa.Descricao}\n" +
+                  $"Status: {pegarTarefa.StatusTarefa}\n" +
+                  $"Data Criação: {pegarTarefa.DataCriacao}\n" +
+                  (pegarTarefa.HoraEstimada != null ? $"Horas Estimada: {pegarTarefa.HoraEstimada}\n" : ""));
+                }
+            }catch(Exception e)
+            {
+                throw (new Exception("Erro ao pegar tarefa: " + e.Message));
+            }
+        }
     }
 }
