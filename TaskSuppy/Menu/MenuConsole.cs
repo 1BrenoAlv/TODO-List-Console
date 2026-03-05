@@ -1,4 +1,5 @@
-﻿using TaskSuppy.Entities;
+﻿using TaskSuppy.Db;
+using TaskSuppy.Entities;
 using TaskSuppy.Entities.Enum;
 using TaskSuppy.Services;
 
@@ -8,7 +9,8 @@ namespace TaskSuppy.Menu
     {
         public static void ShowMenu()
         {
-            TarefaService tarefaService = new TarefaService();
+            var context = new AppDbContext();
+            TarefaService tarefaService = new TarefaService(context);
 
             while (true)
             {

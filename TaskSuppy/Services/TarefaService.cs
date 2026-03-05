@@ -1,26 +1,25 @@
-﻿using TaskSuppy.Entities;
+﻿using System.Collections.Generic;
+using TaskSuppy.Db;
+using TaskSuppy.Entities;
 using TaskSuppy.Services.Interface;
 
 namespace TaskSuppy.Services
 {
     public class TarefaService : ITarefaService
     {
-        private List<Tarefa> _tarefa = new List<Tarefa>();
+        private readonly AppDbContext _context;
 
-        public TarefaService(List<Tarefa> tarefa)
+        public TarefaService(AppDbContext dbConnection)
         {
-            _tarefa = tarefa;
+            _context = dbConnection;
         }
 
-        public TarefaService()
-        {
-        }
 
         public List<Tarefa> ListarTarefas()
         {
             try
             {
-            return _tarefa;
+                return _context.Tarefa.ToList();
 
             }
             catch (Exception e)
@@ -32,7 +31,11 @@ namespace TaskSuppy.Services
         {
             try
             {
-                _tarefa.Add(tarefa);
+                _context.Tarefa.Add(tarefa);
+                if (tarefa != null)
+                {
+                    _context.SaveChanges();
+                }
             }
             catch (Exception e) { throw new Exception("Erro ao criar tarefa: " + e.Message); }
         }
@@ -42,12 +45,13 @@ namespace TaskSuppy.Services
             try
             {
                 int id = tarefa.Id;
-                var tarefaEdit = _tarefa.FirstOrDefault(e => e.Id == id);
+                var tarefaEdit = _context.Tarefa.FirstOrDefault(e => e.Id == id);
                 if (tarefaEdit != null)
                 {
                     tarefaEdit.Titulo = tarefa.Titulo;
                     tarefaEdit.Descricao = tarefa.Descricao;
                     tarefaEdit.HoraEstimada = tarefa.HoraEstimada;
+                    _context.SaveChanges();
                 }
             }
             catch (Exception e)
@@ -60,8 +64,13 @@ namespace TaskSuppy.Services
         {
             try
             {
-                var tarefaExcluir = _tarefa.FirstOrDefault(i => i.Id == id);
-                if (tarefaExcluir != null) _tarefa.Remove(tarefaExcluir);
+                var tarefaExcluir = _context.Tarefa.FirstOrDefault(i => i.Id == id);
+                if (tarefaExcluir != null)
+                {
+                    _context.Tarefa.Remove(tarefaExcluir);
+                    _context.SaveChanges();
+                }
+
             }
             catch (Exception e)
             {
@@ -69,15 +78,16 @@ namespace TaskSuppy.Services
             }
         }
 
-        public void AlterarStatus(Tarefa tarefa) 
+        public void AlterarStatus(Tarefa tarefa)
         {
             try
             {
                 int id = tarefa.Id;
-                var tarefaStatus = _tarefa.FirstOrDefault(i => i.Id == id);
+                var tarefaStatus = _context.Tarefa.FirstOrDefault(i => i.Id == id);
                 if (tarefaStatus != null)
                 {
                     tarefaStatus.StatusTarefa = tarefa.StatusTarefa;
+                    _context.SaveChanges();
                 }
             }
             catch (Exception e)
@@ -90,8 +100,8 @@ namespace TaskSuppy.Services
         {
             try
             {
-                var pegarTarefa = _tarefa.FirstOrDefault(p => p.Id == id);
-                if(pegarTarefa != null)
+                var pegarTarefa = _context.Tarefa.FirstOrDefault(p => p.Id == id);
+                if (pegarTarefa != null)
                 {
                     Console.WriteLine($"===============Tarefa #{pegarTarefa.Id}================\n\n" +
                   $"Titulo: {pegarTarefa.Titulo}\n" +
@@ -100,7 +110,8 @@ namespace TaskSuppy.Services
                   $"Data Criação: {pegarTarefa.DataCriacao}\n" +
                   (pegarTarefa.HoraEstimada != null ? $"Horas Estimada: {pegarTarefa.HoraEstimada}\n" : ""));
                 }
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 throw (new Exception("Erro ao pegar tarefa: " + e.Message));
             }

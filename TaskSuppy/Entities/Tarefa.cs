@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using TaskSuppy.Entities.Enum;
 
 namespace TaskSuppy.Entities
 {
     public class Tarefa
     {
+        [Key]
         public int Id { get; set; }
         public string Titulo { get; set; } = string.Empty;
         public string Descricao { get; set; } = string.Empty;
         public Status StatusTarefa { get; set; } = Status.PENDENTE;
         public DateTime DataCriacao { get; set; } = DateTime.Now;
         public TimeSpan? HoraEstimada { get; set; } // Para saber quantas horas ela deve ser concluida
-        private static int _contadorId = 0;
 
+        public Tarefa() { }
         public Tarefa(int id, string titulo, string descricao, TimeSpan? horaEstimada)
         {
             Id = id;
@@ -29,14 +31,12 @@ namespace TaskSuppy.Entities
 
         public Tarefa(string titulo, string descricao, TimeSpan? horaEstimada)
         {
-            Id = Interlocked.Increment(ref _contadorId);
             Titulo = titulo;
             Descricao = descricao;
             HoraEstimada = horaEstimada;
         }
         public Tarefa(string titulo, string descricao)
         {
-            Id = Interlocked.Increment(ref _contadorId);
             Titulo = titulo;
             Descricao = descricao;
         }
