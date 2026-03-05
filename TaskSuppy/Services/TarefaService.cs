@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using TaskSuppy.Db;
 using TaskSuppy.Entities;
 using TaskSuppy.Services.Interface;
@@ -20,11 +23,10 @@ namespace TaskSuppy.Services
             try
             {
                 return _context.Tarefa.ToList();
-
             }
-            catch (Exception e)
+            catch (SqlException e)
             {
-                throw new Exception("Erro ao listar tarefas :" + e.Message);
+                throw new Exception("Erro ao listar tarefas :" + e.Message, e);
             }
         }
         public void CriarTarefa(Tarefa tarefa)
@@ -37,7 +39,14 @@ namespace TaskSuppy.Services
                     _context.SaveChanges();
                 }
             }
-            catch (Exception e) { throw new Exception("Erro ao criar tarefa: " + e.Message); }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Erro ao criar tarefa: " + e.Message);
+            }
         }
 
         public void EditarTarefa(Tarefa tarefa)
@@ -54,9 +63,14 @@ namespace TaskSuppy.Services
                     _context.SaveChanges();
                 }
             }
+            
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e.Message);
+            }
             catch (Exception e)
             {
-                throw new Exception("Erro ao editar tarefa: " + e.Message);
+                Console.WriteLine("Erro ao editar tarefa: " + e.Message);
             }
         }
 
@@ -72,9 +86,13 @@ namespace TaskSuppy.Services
                 }
 
             }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e.Message);
+            }
             catch (Exception e)
             {
-                throw new Exception("Erro ao tentar deletar tarefa: " + e.Message);
+                Console.WriteLine("Erro ao tentar deletar tarefa: " + e.Message);
             }
         }
 
@@ -90,9 +108,13 @@ namespace TaskSuppy.Services
                     _context.SaveChanges();
                 }
             }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e.Message);
+            }
             catch (Exception e)
             {
-                throw (new Exception("Erro ao Alterar Status da tarefa: " + e.Message));
+                Console.WriteLine("Erro ao Alterar Status da tarefa: " + e.Message);
             }
         }
 
@@ -113,8 +135,7 @@ namespace TaskSuppy.Services
             }
             catch (Exception e)
             {
-                throw (new Exception("Erro ao pegar tarefa: " + e.Message));
-            }
+                Console.WriteLine("Erro ao pegar tarefa: " + e.Message);           }
         }
     }
 }
