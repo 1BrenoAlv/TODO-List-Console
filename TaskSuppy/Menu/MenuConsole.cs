@@ -1,6 +1,4 @@
 ﻿using TaskSuppy.Db;
-using TaskSuppy.Entities;
-using TaskSuppy.Entities.Enum;
 using TaskSuppy.Menu.MenuOpcoes;
 using TaskSuppy.Services;
 
@@ -8,10 +6,11 @@ namespace TaskSuppy.Menu
 {
     class MenuConsole
     {
-        public static void ShowMenu()
+        public static async Task ShowMenu()
         {
             var context = new AppDbContext();
             TarefaService tarefaService = new TarefaService(context);
+
 
             while (true)
             {
@@ -40,59 +39,41 @@ namespace TaskSuppy.Menu
                 {
                     Console.Clear();
                     Console.WriteLine("Encerrando....");
-                    Thread.Sleep(3000);
+                    await Task.Delay(1500);
                     return;
                 }
                 switch (escolha)
                 {
+
                     case "1":
                         MenuCriarTarefa.CriarTarefa();
                         break;
                     case "2":
                         Console.Clear();
-                        if (tarefaService.ListarTarefas().Count == 0)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Lista de Tarefas Vazia!!");
-                            Thread.Sleep(1500);
-                            break;
-                        }
-                        else
-                        {
-                            MenuEditarTarefa.EditarTarefa();
-                        }
+                        await MenuEditarTarefa.EditarTarefa();
                         break;
                     case "3":
                         Console.Clear();
-                        if (tarefaService.ListarTarefas().Count == 0)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Lista de Tarefas Vazia!!");
-                            Thread.Sleep(1000);
-                            break;
-                        }
-                        else
-                        {
-                            MenuExcluirTarefa.ExcluirTarefa();
-                        }
+                        await MenuExcluirTarefa.ExcluirTarefa();
                         break;
                     case "4":
-                        Console.Clear();
-                        if (tarefaService.ListarTarefas().Count == 0)
+                        var tarefa = await tarefaService.ListarTarefas();
+                        if (tarefa.Count == 0)
                         {
                             Console.Clear();
                             Console.WriteLine("Lista de Tarefas Vazia!!");
-                            Thread.Sleep(1500);
+                            await Task.Delay(1500);
                             break;
                         }
                         else
                         {
                             Console.WriteLine("======================================");
-                            Console.WriteLine("           Lista de Tarefas!          ");
-                            foreach (var lista in tarefaService.ListarTarefas())
+                            Console.WriteLine("           Lista de Tarefas!          \n");
+                            foreach (var lista in tarefa)
                             {
                                 Console.WriteLine(lista);
                             }
+                            Console.WriteLine("======================================");
                         }
 
                         Console.WriteLine("\nPressione qualquer tecla para continuar...");
@@ -100,22 +81,13 @@ namespace TaskSuppy.Menu
                         Console.Clear();
                         break;
                     case "5":
-                        if (tarefaService.ListarTarefas().Count == 0)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Lista de Tarefas Vazia!!");
-                            Thread.Sleep(1000);
-                            break;
-                        }
-                        else
-                        {
-                           MenuAlterarStatusTarefa.AlterarStatusTarefa();
-                        }
+                        await MenuAlterarStatusTarefa.AlterarStatusTarefa();
                         break;
-                        default: Console.WriteLine("Opção Inválida!\nTente Novamente!!");
-                        Thread.Sleep(1500);
+                    default:
+                        Console.WriteLine("Opção Inválida!\nTente Novamente!!");
+                        await Task.Delay(1500);
                         Console.Clear();
-                            break;
+                        break;
                 }
             }
         }

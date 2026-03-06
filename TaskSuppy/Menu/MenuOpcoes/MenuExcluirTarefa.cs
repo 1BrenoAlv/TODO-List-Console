@@ -1,60 +1,71 @@
 ﻿using TaskSuppy.Db;
+using TaskSuppy.Entities;
 using TaskSuppy.Services;
 
 namespace TaskSuppy.Menu.MenuOpcoes
 {
-     class MenuExcluirTarefa
+    class MenuExcluirTarefa
     {
-       public static void ExcluirTarefa()
+        public static async Task ExcluirTarefa()
         {
             var context = new AppDbContext();
             TarefaService tarefaService = new TarefaService(context);
+            var tarefa = await tarefaService.ListarTarefas();
 
-            Console.WriteLine("======================================");
-            Console.WriteLine("           Exclua sua Tarefa!         ");
-            Console.WriteLine("======================================");
-            Console.Write("Digite o ID da tarefa: ");
-            while (true)
+            if (tarefa.Count == 0)
             {
-                string idExcluir = Console.ReadLine();
-                if (!int.TryParse(idExcluir, out int id))
-                {
-                    Console.Clear();
-                    Console.Write("Valor inválido! Digite apenas números: ");
-                    continue;
-                }
-                bool verifId = tarefaService.ListarTarefas().Any(i => i.Id == id); // Verifica existencia em listas de objetos (LINQ)
-                if (!verifId)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Erro: Id não encontrado! Tente Novamente!!");
-                    Console.Write("Digite o ID da tarefa novamente: ");
-                    continue;
-                }
-                tarefaService.PegarTarefa(id);
-                Console.Write("Deseja Realmente Excluir essa tarefa? (S/N)");
+                Console.Clear();
+                Console.WriteLine("Lista de Tarefas Vazia!!");
+                await Task.Delay(1500);
+            }
+            else
+            {
+                Console.WriteLine("======================================");
+                Console.WriteLine("           Exclua sua Tarefa!         ");
+                Console.WriteLine("======================================");
+                Console.Write("Digite o ID da tarefa: ");
                 while (true)
                 {
-                    string escolhaExcluir = Console.ReadLine().ToLower();
-                    if (escolhaExcluir == "s")
+                    string idExcluir = Console.ReadLine();
+                    if (!int.TryParse(idExcluir, out int id))
                     {
                         Console.Clear();
-                        Console.WriteLine("Tarefa Excluida!!\n\n");
-                        tarefaService.PegarTarefa(id);
-                        Thread.Sleep(2000);
-                        tarefaService.DeletarTarefa(id);
-                        Console.Clear();
-                        break;
+                        Console.Write("Valor inválido! Digite apenas números: ");
+                        continue;
                     }
-                    else if (escolhaExcluir == "n")
+                    bool verifId = tarefa.Any(i => i.Id == id);
+                    if (!verifId)
                     {
-                        break;
+                        Console.Clear();
+                        Console.WriteLine("Erro: Id não encontrado! Tente Novamente!!");
+                        Console.Write("Digite o ID da tarefa novamente: ");
+                        continue;
                     }
-                    Console.Clear();
-                    Console.Write("Digite uma opção valida!!\n" +
-                        "Deseja Realmente Excluir essa tarefa? (S/N): ");
+                    tarefaService.PegarTarefa(id);
+                    Console.Write("Deseja Realmente Excluir essa tarefa? (S/N)");
+                    while (true)
+                    {
+                        string escolhaExcluir = Console.ReadLine().ToLower();
+                        if (escolhaExcluir == "s")
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Tarefa Excluida!!\n\n");
+                            tarefaService.PegarTarefa(id);
+                            Thread.Sleep(2000);
+                            tarefaService.DeletarTarefa(id);
+                            Console.Clear();
+                            break;
+                        }
+                        else if (escolhaExcluir == "n")
+                        {
+                            break;
+                        }
+                        Console.Clear();
+                        Console.Write("Digite uma opção valida!!\n" +
+                            "Deseja Realmente Excluir essa tarefa? (S/N): ");
+                    }
+                    break;
                 }
-                break;
             }
         }
     }

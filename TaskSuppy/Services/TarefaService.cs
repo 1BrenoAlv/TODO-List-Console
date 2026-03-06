@@ -18,11 +18,16 @@ namespace TaskSuppy.Services
         }
 
 
-        public List<Tarefa> ListarTarefas()
+        public async Task<List<Tarefa>> ListarTarefas()
         {
             try
             {
-                return _context.Tarefa.ToList();
+                Console.Clear();
+                Console.WriteLine("Buscando dados...");
+                Task.Delay(1000).Wait();
+                Console.Clear();
+                var tarefas = await _context.Tarefa.ToListAsync();
+                return tarefas;
             }
             catch (SqlException e)
             {
@@ -63,7 +68,7 @@ namespace TaskSuppy.Services
                     _context.SaveChanges();
                 }
             }
-            
+
             catch (DbUpdateException e)
             {
                 Console.WriteLine(e.Message);
@@ -125,7 +130,7 @@ namespace TaskSuppy.Services
                 var pegarTarefa = _context.Tarefa.FirstOrDefault(p => p.Id == id);
                 if (pegarTarefa != null)
                 {
-                    Console.WriteLine($"===============Tarefa #{pegarTarefa.Id}================\n\n" +
+                    Console.WriteLine($"===============Tarefa N°{pegarTarefa.Id}================\n\n" +
                   $"Titulo: {pegarTarefa.Titulo}\n" +
                   $"Conteúdo: {pegarTarefa.Descricao}\n" +
                   $"Status: {pegarTarefa.StatusTarefa}\n" +
@@ -135,7 +140,8 @@ namespace TaskSuppy.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine("Erro ao pegar tarefa: " + e.Message);           }
+                Console.WriteLine("Erro ao pegar tarefa: " + e.Message);
+            }
         }
     }
 }

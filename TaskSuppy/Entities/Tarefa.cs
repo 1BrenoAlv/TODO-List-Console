@@ -10,7 +10,7 @@ namespace TaskSuppy.Entities
         public int Id { get; set; }
         public string Titulo { get; set; } = string.Empty;
         public string Descricao { get; set; } = string.Empty;
-        public Status StatusTarefa { get; set; } = Status.PENDENTE;
+        public Status StatusTarefa { get; set; } = Status.Pendente;
         public DateTime DataCriacao { get; set; } = DateTime.Now;
         public TimeSpan? HoraEstimada { get; set; } // Para saber quantas horas ela deve ser concluida
 
