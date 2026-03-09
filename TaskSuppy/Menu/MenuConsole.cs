@@ -10,8 +10,6 @@ namespace TaskSuppy.Menu
         {
             var context = new AppDbContext();
             TarefaService tarefaService = new TarefaService(context);
-
-
             while (true)
             {
                 Console.Clear();
@@ -35,64 +33,64 @@ namespace TaskSuppy.Menu
                 Console.WriteLine("  0 - Encerrar");
                 Console.WriteLine("--------------------------------------");
                 Console.Write("Escolha uma opção: ");
-                string escolha = Console.ReadLine();
-                if (escolha == "0")
-                {
-                    Console.Clear();
-                    Console.WriteLine("Encerrando....");
-                    await Task.Delay(1500);
-                    return;
-                }
-                switch (escolha)
-                {
-
-                    case "1":
-                        MenuCriarTarefa.CriarTarefa();
-                        break;
-                    case "2":
+                string escolha = Console.ReadLine()!;
+                    if (escolha == "0")
+                    {
                         Console.Clear();
-                        await MenuEditarTarefa.EditarTarefa();
-                        break;
-                    case "3":
-                        Console.Clear();
-                        await MenuExcluirTarefa.ExcluirTarefa();
-                        break;
-                    case "4":
-                        var tarefa = await tarefaService.ListarTarefas();
-                        if (tarefa.Count == 0)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Lista de Tarefas Vazia!!");
-                            await Task.Delay(1500);
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("======================================");
-                            Console.WriteLine("           Lista de Tarefas!          \n");
-                            foreach (var lista in tarefa)
-                            {
-                                Console.WriteLine(lista);
-                            }
-                            Console.WriteLine("======================================");
-                        }
-
-                        Console.WriteLine("\nPressione qualquer tecla para continuar...");
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case "5":
-                        await MenuAlterarStatusTarefa.AlterarStatusTarefa();
-                        break;
-                        case "6":
-                        await MenuLinq.ConsultaCategoriaTarefa();
-                        break;
-                    default:
-                        Console.WriteLine("Opção Inválida!\nTente Novamente!!");
+                        Console.WriteLine("Encerrando....");
                         await Task.Delay(1500);
-                        Console.Clear();
-                        break;
-                }
+                        return;
+                    }
+                    switch (escolha)
+                    {
+
+                        case "1":
+                            MenuCriarTarefa.CriarTarefa();
+                            break;
+                        case "2":
+                            Console.Clear();
+                            await MenuEditarTarefa.EditarTarefa();
+                            break;
+                        case "3":
+                            Console.Clear();
+                            await MenuExcluirTarefa.ExcluirTarefa();
+                            break;
+                        case "4":
+                            var tarefa = await tarefaService.ListarTarefas();
+                            if (tarefa.Count == 0)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Lista de Tarefas Vazia!!");
+                                await Task.Delay(1500);
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("======================================");
+                                Console.WriteLine("           Lista de Tarefas!          \n");
+                                foreach (var lista in tarefa)
+                                {
+                                    Console.WriteLine(lista);
+                                }
+                                Console.WriteLine("======================================");
+                            }
+
+                            Console.WriteLine("\nPressione qualquer tecla para continuar...");
+                            Console.ReadKey();
+                            Console.Clear();
+                            break;
+                        case "5":
+                            await MenuAlterarStatusTarefa.AlterarStatusTarefa();
+                            break;
+                        case "6":
+                            await MenuLinq.ConsultaCategoriaTarefa();
+                            break;
+                        default:
+                            Console.WriteLine("Opção Inválida!\nTente Novamente!!");
+                            await Task.Delay(1500);
+                            Console.Clear();
+                            break;
+                    }
             }
         }
     }

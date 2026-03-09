@@ -15,21 +15,24 @@ namespace TaskSuppy.Menu.MenuOpcoes
 
                 Console.Clear();
                 Console.WriteLine("======================================");
-                Console.WriteLine("           Crie sua Tarefa!           ");
+                Console.WriteLine("           Crie sua Tarefa!           \n");
+                Console.WriteLine("                                      \n");
+                Console.WriteLine("                     * => Obrigatório \n");
                 Console.WriteLine("======================================");
-                Console.Write("Digite o Titulo: ");
-                string titulo = Console.ReadLine();
-                Console.Write("Digite o Conteúdo da Tarefa: ");
-                string descricao = Console.ReadLine();
+                Console.Write("*Digite o Titulo: ");
+                string titulo = Console.ReadLine()!;
+                Console.Write("*Digite o Conteúdo da Tarefa: ");
+                string descricao = Console.ReadLine()!;
                 Console.Write("Vai ter prazo para conclusão? (S/N)");
                 while (true)
                 {
-                    string continua = Console.ReadLine()?.ToLower();
+                    string continua = Console.ReadLine()?.ToLower()!;
                     if (continua == "n")
                     {
                         if (string.IsNullOrWhiteSpace(descricao) || string.IsNullOrWhiteSpace(titulo))
                         {
                             Console.WriteLine("Dados não foram preenchidos corretamente!!\n");
+                            Console.WriteLine("Algum campo está vazio!!\n");
                             Console.WriteLine("Voltando ao menu principal....");
                             Thread.Sleep(3000);
                             break;
@@ -54,7 +57,7 @@ namespace TaskSuppy.Menu.MenuOpcoes
                         Console.Write("Qual é a hora estimada para conclusão da tarefa? ");
                         while (true)
                         {
-                            string horas = Console.ReadLine();
+                            string horas = Console.ReadLine()!;
                             if (!string.IsNullOrWhiteSpace(horas) && !horas.Contains(":"))
                             {
                                 horas += ":00";
