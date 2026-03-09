@@ -31,6 +31,7 @@ namespace TaskSuppy.Menu
                 Console.WriteLine("  3 - Excluir Tarefa");
                 Console.WriteLine("  4 - Listar Tarefas");
                 Console.WriteLine("  5 - Alterar Status da Tarefa");
+                Console.WriteLine("  6 - Filtrar Tarefas");
                 Console.WriteLine("  0 - Encerrar");
                 Console.WriteLine("--------------------------------------");
                 Console.Write("Escolha uma opção: ");
@@ -82,6 +83,9 @@ namespace TaskSuppy.Menu
                         break;
                     case "5":
                         await MenuAlterarStatusTarefa.AlterarStatusTarefa();
+                        break;
+                        case "6":
+                        await MenuLinq.ConsultaCategoriaTarefa();
                         break;
                     default:
                         Console.WriteLine("Opção Inválida!\nTente Novamente!!");
