@@ -1,7 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using TaskSuppy.Db;
 using TaskSuppy.Entities;
 using TaskSuppy.Services.Interface;
@@ -89,7 +87,6 @@ namespace TaskSuppy.Services
                     _context.Tarefa.Remove(tarefaExcluir);
                     _context.SaveChanges();
                 }
-
             }
             catch (DbUpdateException e)
             {

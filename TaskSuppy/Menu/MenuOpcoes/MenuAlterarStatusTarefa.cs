@@ -1,7 +1,6 @@
-﻿using TaskSuppy.Db;
-using TaskSuppy.Entities;
+﻿using TaskSuppy.Entities;
 using TaskSuppy.Entities.Enum;
-using TaskSuppy.Services;
+using TaskSuppy.Services.Interface;
 
 namespace TaskSuppy.Menu.MenuOpcoes
 {
@@ -9,8 +8,7 @@ namespace TaskSuppy.Menu.MenuOpcoes
     {
         public static async Task AlterarStatusTarefa()
         {
-            var context = new AppDbContext();
-            TarefaService tarefaService = new TarefaService(context);
+            ITarefaService tarefaService = DependencyInjection.Dependencias();
             var tarefaList = await tarefaService.ListarTarefas();
             if (tarefaList.Count == 0)
             {

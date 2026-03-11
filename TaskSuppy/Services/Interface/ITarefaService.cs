@@ -1,5 +1,4 @@
 ﻿using TaskSuppy.Entities;
-using TaskSuppy.Entities.Enum;
 
 namespace TaskSuppy.Services.Interface
 {

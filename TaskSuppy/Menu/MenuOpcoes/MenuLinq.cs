@@ -1,7 +1,5 @@
-﻿using TaskSuppy.Db;
-using TaskSuppy.Entities.Enum;
-using TaskSuppy.Services;
-using System.Linq;
+﻿using TaskSuppy.Entities.Enum;
+using TaskSuppy.Services.Interface;
 
 namespace TaskSuppy.Menu.MenuOpcoes
 {
@@ -9,9 +7,7 @@ namespace TaskSuppy.Menu.MenuOpcoes
     {
        public  static async Task ConsultaCategoriaTarefa()
         {
-            var context = new AppDbContext();
-            TarefaService tarefaService = new TarefaService(context);
-
+            ITarefaService tarefaService = DependencyInjection.Dependencias();
             var tarefa = await tarefaService.ListarTarefas();
 
             Console.Write("Digite o status da lista: ");

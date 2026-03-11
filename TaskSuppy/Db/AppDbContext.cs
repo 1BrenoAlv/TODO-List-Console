@@ -1,6 +1,4 @@
-﻿
-using DotNetEnv;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TaskSuppy.Entities;
 
 namespace TaskSuppy.Db

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskSuppy.Db;
-using TaskSuppy.Entities;
-using TaskSuppy.Services;
+﻿using TaskSuppy.Entities;
+using TaskSuppy.Services.Interface;
 
 namespace TaskSuppy.Menu.MenuOpcoes
 {
@@ -13,8 +7,7 @@ namespace TaskSuppy.Menu.MenuOpcoes
     {
         public static async Task EditarTarefa()
         {
-            var context = new AppDbContext();
-            TarefaService tarefaService = new TarefaService(context);
+            ITarefaService tarefaService = DependencyInjection.Dependencias();
             var tarefas = await tarefaService.ListarTarefas();
 
             if (tarefas.Count == 0)

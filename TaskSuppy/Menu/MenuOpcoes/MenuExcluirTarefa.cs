@@ -1,6 +1,4 @@
-﻿using TaskSuppy.Db;
-using TaskSuppy.Entities;
-using TaskSuppy.Services;
+﻿using TaskSuppy.Services.Interface;
 
 namespace TaskSuppy.Menu.MenuOpcoes
 {
@@ -8,8 +6,9 @@ namespace TaskSuppy.Menu.MenuOpcoes
     {
         public static async Task ExcluirTarefa()
         {
-            var context = new AppDbContext();
-            TarefaService tarefaService = new TarefaService(context);
+            //var context = new AppDbContext();
+            //TarefaService tarefaService = new TarefaService(context);
+            ITarefaService tarefaService = DependencyInjection.Dependencias();
             var tarefa = await tarefaService.ListarTarefas();
 
             if (tarefa.Count == 0)

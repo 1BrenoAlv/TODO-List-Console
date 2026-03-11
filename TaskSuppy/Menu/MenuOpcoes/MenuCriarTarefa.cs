@@ -1,6 +1,5 @@
-﻿using TaskSuppy.Db;
-using TaskSuppy.Entities;
-using TaskSuppy.Services;
+﻿using TaskSuppy.Entities;
+using TaskSuppy.Services.Interface;
 
 namespace TaskSuppy.Menu.MenuOpcoes
 {
@@ -10,9 +9,7 @@ namespace TaskSuppy.Menu.MenuOpcoes
         {
             try
             {
-                var context = new AppDbContext();
-                TarefaService tarefaService = new TarefaService(context);
-
+                ITarefaService tarefaService = DependencyInjection.Dependencias();
                 Console.Clear();
                 Console.WriteLine("======================================");
                 Console.WriteLine("           Crie sua Tarefa!           \n");
